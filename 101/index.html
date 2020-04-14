@@ -1,0 +1,456 @@
+<!DOCTYPE html><html>
+
+<head>
+<meta charset="utf-8">
+<title>Delivery Availability Checker - Tutorial</title>
+<style>
+@import url(http://fonts.googleapis.com/css?family=Inconsolata);
+@import url(http://fonts.googleapis.com/css?family=PT+Sans);
+@import url(http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700);
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+nav,
+section,
+summary {
+  display: block;
+}
+audio,
+canvas,
+video {
+  display: inline-block;
+}
+audio:not([controls]) {
+  display: none;
+  height: 0;
+}
+[hidden] {
+  display: none;
+}
+html {
+  font-family: sans-serif;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+}
+body {
+  margin: 0;
+}
+a:focus {
+  outline: thin dotted;
+}
+a:active,
+a:hover {
+  outline: 0;
+}
+h1 {
+  font-size: 2em;
+}
+abbr[title] {
+  border-bottom: 1px dotted;
+}
+b,
+strong {
+  font-weight: bold;
+}
+dfn {
+  font-style: italic;
+}
+mark {
+  background: #ff0;
+  color: #000;
+}
+code,
+kbd,
+pre,
+samp {
+  font-family: monospace, serif;
+  font-size: 1em;
+}
+pre {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+q {
+  quotes: "\201C" "\201D" "\2018" "\2019";
+}
+small {
+  font-size: 80%;
+}
+sub,
+sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+sup {
+  top: -0.5em;
+}
+sub {
+  bottom: -0.25em;
+}
+img {
+  border: 0;
+  max-width: 100%;
+  padding: 0.8em 0em;
+}
+svg:not(:root) {
+  overflow: hidden;
+}
+figure {
+  margin: 0;
+}
+fieldset {
+  border: 1px solid #c0c0c0;
+  margin: 0 2px;
+  padding: 0.35em 0.625em 0.75em;
+}
+legend {
+  border: 0;
+  padding: 0;
+}
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+  font-size: 100%;
+  margin: 0;
+}
+button,
+input {
+  line-height: normal;
+}
+button,
+html input[type="button"],
+input[type="reset"],
+input[type="submit"] {
+  -webkit-appearance: button;
+  cursor: pointer;
+}
+button[disabled],
+input[disabled] {
+  cursor: default;
+}
+input[type="checkbox"],
+input[type="radio"] {
+  box-sizing: border-box;
+  padding: 0;
+}
+input[type="search"] {
+  -webkit-appearance: textfield;
+  -moz-box-sizing: content-box;
+  -webkit-box-sizing: content-box;
+  box-sizing: content-box;
+}
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+button::-moz-focus-inner,
+input::-moz-focus-inner {
+  border: 0;
+  padding: 0;
+}
+textarea {
+  overflow: auto;
+  vertical-align: top;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+html {
+  font-family: 'PT Sans', sans-serif;
+}
+pre,
+code {
+  font-family: 'Inconsolata', sans-serif;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'PT Sans Narrow', sans-serif;
+  font-weight: 700;
+}
+html {
+  background-color: #2D2D2D;
+  color: #fff;
+  margin: 1em;
+}
+body {
+  background-color: #2D2D2D;color: #fff;
+  margin: 0 auto;
+  max-width: 23cm;
+  padding: 1em;
+}
+.markdown-body {font-family: 'PT Sans', sans-serif; background-color: #2D2D2D;color: #fff;}
+code {
+  background-color: #353535;
+  padding: 2px;
+}
+a {
+  color: #99cc99;
+}
+a:visited {
+  color: #82BC82;
+}
+a:hover {
+  color: #82BC82;
+}
+h1 {
+  color: #6ACCCB;
+}
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: #6ACCCB;
+}
+pre {
+  background-color: #2D2D2D;
+  color: #fff;
+  border: 1pt solid #ccc;
+  padding: 1em;
+  box-shadow: 5pt 5pt 8pt #333;
+}
+pre code {
+  background-color: #2D2D2D;
+}
+h1 {
+  font-size: 1.8em;
+}
+h2 {
+  font-size: 1.6em;
+}
+h3 {
+  font-size: 1.4em;
+}
+h4 {
+  font-size: 1.2em;
+}
+h5 {
+  font-size: 1.15em;
+}
+h6 {
+  font-size: 1.15em;
+}
+
+table {
+
+  overflow: auto;
+  box-shadow: 5pt 5pt 8pt #333;
+}
+
+table th {
+  font-weight: bold;
+  background:#353535;
+}
+
+table th,
+table td {
+  padding: 6px 13px;
+  border: 1px solid #ccc;
+}
+
+table tr {
+  border-top: 1px solid #ccc;
+}
+
+table tr:nth-child(2n) {
+}
+table td{ word-wrap: break-word !important; word-break: break-all !important; }
+@media (max-width: 540px) {
+  html{margin: 0 auto; padding: 4px;}
+}
+/* Tomorrow Night Eighties Theme */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+
+/* Tomorrow Comment */
+.hljs-comment {
+  color: #999999;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-attribute,
+.hljs-tag,
+.hljs-regexp,
+.ruby .hljs-constant,
+.xml .hljs-tag .hljs-title,
+.xml .hljs-pi,
+.xml .hljs-doctype,
+.html .hljs-doctype,
+.css .hljs-id,
+.css .hljs-class,
+.css .hljs-pseudo {
+  color: #f2777a;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-preprocessor,
+.hljs-pragma,
+.hljs-built_in,
+.hljs-literal,
+.hljs-params,
+.hljs-constant {
+  color: #f99157;
+}
+
+/* Tomorrow Yellow */
+.ruby .hljs-class .hljs-title,
+.css .hljs-rules .hljs-attribute {
+  color: #ffcc66;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-value,
+.hljs-inheritance,
+.hljs-header,
+.ruby .hljs-symbol,
+.xml .hljs-cdata {
+  color: #99cc99;
+}
+
+/* Tomorrow Aqua */
+.hljs-title,
+.css .hljs-hexcolor {
+  color: #66cccc;
+}
+
+/* Tomorrow Blue */
+.hljs-function,
+.python .hljs-decorator,
+.python .hljs-title,
+.ruby .hljs-function .hljs-title,
+.ruby .hljs-title .hljs-keyword,
+.perl .hljs-sub,
+.javascript .hljs-title,
+.coffeescript .hljs-title {
+  color: #6699cc;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.javascript .hljs-function {
+  color: #cc99cc;
+}
+
+.hljs {
+  display: block;
+  overflow-x: auto;
+  background: #2d2d2d;
+  color: #cccccc;
+  padding: 0.5em;
+  -webkit-text-size-adjust: none;
+}
+
+.coffeescript .javascript,
+.javascript .xml,
+.tex .hljs-formula,
+.xml .javascript,
+.xml .vbscript,
+.xml .css,
+.xml .hljs-cdata {
+  opacity: 0.5;
+}
+
+
+</style>
+
+<style> @media print{ .hljs{overflow: visible; word-wrap: break-word !important;} }</style></head><body><div class="markdown-body">
+<h1 id="toc_0">Delivery Availability Checker - Tutorial</h1>
+
+<p><img src="../img/logo.png" alt="logo"/></p>
+
+<h1 id="toc_1">Tutorial</h1>
+
+<p>Please Do NOT abuse this extension and please HELP THOSE IN NEED during these tough times! </p>
+
+<h3 id="toc_2">Step 1. Install the extension</h3>
+
+<p>Use chrome web store to install </p>
+
+<p><a href="https://chrome.google.com/webstore/detail/delivery-availability-che/aciieodoebcieadfecdgeeooelmflkal"><img src="../img/ChromeWebStore_BadgeWBorder_v2_206x58.png" alt=""/></a></p>
+
+<h3 id="toc_3">Step 2. Open grocery website and add the items you want</h3>
+
+<h3 id="toc_4">Step 3. Go to order schedule page</h3>
+
+<p><em>In order to find availability, you must go to these schedule pages.</em></p>
+
+<p>Order schedule page of Amazon.com </p>
+
+<p><img src="../img/amazon_shedule_page.png" alt="" style="width:700px;"/></p>
+
+<p>Order schedule page of Amazon Prime Now </p>
+
+<p><img src="../img/prime_now_shedule_page.png" alt="" style="width:700px;"/></p>
+
+<p>Order schedule page of Costco sameday </p>
+
+<p><img src="../img/costco_insta_shedule_page.png" alt="" style="width:700px;"/></p>
+
+<p>Order schedule page of Instacart </p>
+
+<p><img src="../img/instacart_shedule_page.png" alt="" style="width:700px;"/></p>
+
+<h3 id="toc_5">Step 4. Turn on the extension</h3>
+
+<p><img src="../img/panel.png" alt=""/></p>
+
+<h3 id="toc_6">Step 5. Notify when an availability found</h3>
+
+<p><img src="../img/notification.png" alt=""/></p>
+
+<p>You will hear an <a href="../audio/notification.ogg">alert sound</a> also. </p>
+
+<h1 id="toc_7">Troubleshooting</h1>
+
+<h3 id="toc_8">#1. An error on the panel</h3>
+
+<p><img src="../img/panel_alert.png" alt=""/></p>
+
+<p>If you see &quot;Error: can&#39;t find schedule pages&quot;, you need to goto Step #3 to make sure you have opened the schedule page.</p>
+
+<h3 id="toc_9">#2. How to make sure it&#39;s running?</h3>
+
+<p>Method A: If you have opened the schedule pages, you can click the start button of this extension. If the pages you opened refresh after you hit the start button, it works well.</p>
+
+<p>Method B: Check if the schedule pages automatically refresh at a random time, if so it works well.</p>
+
+<h1 id="toc_10">Feedback</h1>
+<div id="disqus_thread"></div>
+</div></body>
+<script>
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = 'https://delivery-availability-checker.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-113785996-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-113785996-2');
+</script>
+</html>
+
